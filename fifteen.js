@@ -15,6 +15,8 @@ window.onload = () => {
             bgPos = `-${puzzlepiece.style.left} -${puzzlepiece.style.top}`;
             puzzlepiece.style.backgroundPosition = bgPos;
 
+            puzzlepiece.onmouseover = checkMoves;
+            puzzlepiece.onmouseout = removeMovable;
             puzzlepiece.onclick = movePiece;
         });
     }
@@ -79,5 +81,22 @@ window.onload = () => {
             parseInt(puzzlepiece.style.left) === blank[0]
         );
     }
+
+    function checkMoves() {
+        if (
+            canMoveRight(this) ||
+            canMoveLeft(this) ||
+            canMoveUp(this) ||
+            canMoveDown(this)
+        ){
+            this.classList.add("movablepiece");
+        }
+    }
+    
+    function removeMovable() {
+        this.classList.remove("movablepiece");
+    }
+
+    
 
 }
