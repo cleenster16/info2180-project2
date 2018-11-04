@@ -15,8 +15,6 @@ window.onload = () => {
             bgPos = `-${puzzlepiece.style.left} -${puzzlepiece.style.top}`;
             puzzlepiece.style.backgroundPosition = bgPos;
 
-            puzzlepiece.onmouseover = checkMoves;
-            puzzlepiece.onmouseout = removeMovable;
             puzzlepiece.onclick = movePiece;
         });
     }
@@ -81,7 +79,5 @@ window.onload = () => {
             parseInt(puzzlepiece.style.left) === blank[0]
         );
     }
-
-
 
 }
