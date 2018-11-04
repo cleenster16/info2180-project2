@@ -18,6 +18,8 @@ window.onload = () => {
             puzzlepiece.onmouseover = checkMoves;
             puzzlepiece.onmouseout = removeMovable;
             puzzlepiece.onclick = movePiece;
+
+            addAnimation(puzzlepiece);
         });
     }
 
@@ -97,6 +99,8 @@ window.onload = () => {
         this.classList.remove("movablepiece");
     }
 
-    
+    function addAnimation(puzzlepiece){
+        puzzlepiece.style.transition = "all 0.3s cubic-bezier(.55,0,.1,1)";
+    }
 
 }
