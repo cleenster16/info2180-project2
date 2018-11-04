@@ -1,3 +1,5 @@
+//Transitions have been added.
+
 window.onload = () => {
     const puzzlepieces = document.querySelectorAll('#puzzlearea div');
     const shufflebutton = document.querySelector("#shufflebutton");
