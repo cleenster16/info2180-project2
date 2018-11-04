@@ -4,7 +4,7 @@ window.onload = () => {
     const blank = [300,300];
 
     shufflebutton.onclick = shufflePuzzle;
-    
+
     makePuzzle(4, puzzlepieces);
 
     function makePuzzle(size, puzzlepieces){
@@ -14,6 +14,10 @@ window.onload = () => {
             puzzlepiece.style.top = `${parseInt(i / size) * 100}px`;
             bgPos = `-${puzzlepiece.style.left} -${puzzlepiece.style.top}`;
             puzzlepiece.style.backgroundPosition = bgPos;
+
+            puzzlepiece.onmouseover = checkMoves;
+            puzzlepiece.onmouseout = removeMovable;
+            puzzlepiece.onclick = movePiece;
         });
     }
 
@@ -35,4 +39,49 @@ window.onload = () => {
             );
         }
     }
+
+    function movePiece() {
+        if (canMoveRight(this) || canMoveLeft(this)) {
+            slidePiece(this, "left", 0);
+        } else if (canMoveUp(this) || canMoveDown(this)) {
+            slidePiece(this, "top", 1);
+        }
+    }
+
+    function slidePiece(puzzlepiece, direction, idx) {
+        temp = parseInt(puzzlepiece.style[direction]);
+        puzzlepiece.style[direction] = `${blank[idx]}px`;
+        blank[idx] = temp;
+    }
+
+    function canMoveLeft(puzzlepiece) {
+        return (
+            parseInt(puzzlepiece.style.left) - blank[0] === 100 &&
+            parseInt(puzzlepiece.style.top) === blank[1]
+        );
+    }
+    
+    function canMoveRight(puzzlepiece) {
+        return (
+            parseInt(puzzlepiece.style.left) - blank[0] === -100 &&
+            parseInt(puzzlepiece.style.top) === blank[1]
+        );
+    }
+    
+    function canMoveUp(puzzlepiece) {
+        return (
+            parseInt(puzzlepiece.style.top) - blank[1] === 100 &&
+            parseInt(puzzlepiece.style.left) === blank[0]
+        );
+    }
+    
+    function canMoveDown(puzzlepiece) {
+        return (
+            parseInt(puzzlepiece.style.top) - blank[1] === -100 &&
+            parseInt(puzzlepiece.style.left) === blank[0]
+        );
+    }
+
+
+
 }
