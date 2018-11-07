@@ -1,15 +1,55 @@
-//Transitions have been added.
+/*
+Extra features added: 
+    1. Transitions.
+    2. Resizing of the grid.
+*/
 
 window.onload = () => {
-    const puzzlepieces = document.querySelectorAll('#puzzlearea div');
+    let puzzlepieces = document.querySelectorAll('#puzzlearea div');
     const shufflebutton = document.querySelector("#shufflebutton");
-    const blank = [300,300];
+    let blank = [300,300];
+    addElement("controls", "button", "resizebutton", "Resize");
+    let resizebutton = document.getElementById("resizebutton");
 
     shufflebutton.onclick = shufflePuzzle;
-
+    
     makePuzzle(4, puzzlepieces);
+    addElement("controls", "button", "sizebutton", "4 x 4");
+    let sizebutton = document.getElementById("sizebutton");
 
-    function makePuzzle(size, puzzlepieces){
+    resizebutton.addEventListener("click", function() {
+        if (document.querySelectorAll('#puzzlearea div').length == 15){
+            makePuzzle(6, document.querySelectorAll('#puzzlearea div'));
+            sizebutton.innerHTML = "6 x 6";
+        }else if (document.querySelectorAll('#puzzlearea div').length == 35){
+            makePuzzle(3, document.querySelectorAll('#puzzlearea div'));
+            sizebutton.innerHTML = "3 x 3";
+        }else if (document.querySelectorAll('#puzzlearea div').length == 8){
+            makePuzzle(4, document.querySelectorAll('#puzzlearea div'));
+            sizebutton.innerHTML = "4 x 4";
+        }
+    });
+    
+    function makePuzzle(size, puzzlepieces){        
+
+        blank = [(size-1)*100,(size-1)*100];
+
+        let puzzlearea = document.getElementById("puzzlearea");
+        puzzlearea.style.width = `${(size*100)}px`;
+        puzzlearea.style.height = `${size*100}px`;
+
+        let numPieces = (size * size);
+        if (numPieces < puzzlepieces.length){
+            for (let i=0; i < (puzzlepieces.length - numPieces)+1; i++){
+                deletePiece("puzzlearea");
+            } 
+        }else if(numPieces > puzzlepieces.length){
+            for (let i=1; i < (numPieces - puzzlepieces.length); i++){
+                addPiece("puzzlearea", "div", puzzlepieces.length+i);
+            }
+        }
+
+        puzzlepieces = document.querySelectorAll('#puzzlearea div');
         puzzlepieces.forEach((puzzlepiece, i) => {
             puzzlepiece.classList.add("puzzlepiece");
             puzzlepiece.style.left = `${(i % size) * 100}px`;
@@ -35,6 +75,7 @@ window.onload = () => {
             piece1.style.top = piece2.style.top;
             piece2.style.top = temp;
         }
+        puzzlepieces = document.querySelectorAll('#puzzlearea div');
         for (let i = 0; i < 100; i++) {
             direction = Math.floor(Math.random()) == 1 ? "left" : "top";
             swapPiece(
@@ -102,7 +143,33 @@ window.onload = () => {
     }
 
     function addAnimation(puzzlepiece){
-        puzzlepiece.style.transition = "all 0.3s cubic-bezier(.55,0,.1,1)";
+        puzzlepiece.style.transition = "all 0.7s cubic-bezier(.55,0,.1,1)";
+    }
+
+    function addElement(parentId, elementTag, elementId, html){
+        var p = document.getElementById(parentId);
+        var newElement = document.createElement(elementTag);
+        newElement.setAttribute('id', elementId);
+        newElement.innerHTML = html;
+        p.appendChild(newElement);
+    }
+
+    function addPiece(parentId, elementTag, html){
+        var p = document.getElementById(parentId);
+        var newElement = document.createElement(elementTag);
+        newElement.innerHTML = html;
+        p.appendChild(newElement);
+    }
+
+    function deleteElement(elementClass){
+        let element = document.getElementsByClassName(elementClass);
+        element.parent.removeChild(element);
+    }
+
+    function deletePiece(parentId){
+        const parent = document.getElementById(parentId);
+        let element = document.querySelectorAll('#puzzlearea div');
+        element[element.length-1].remove();
     }
 
 }
